@@ -4,8 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.Type;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -33,12 +34,35 @@ public class inspectionReport {
     @Column(name="safety_devices_no")
     private Integer safetyDevicesNo;
 
+    @Column(name="author")
+    private String author;
+    @Column(name="time_of_report")
+    private String timeStamp;
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+
+
     //No Arg Constructor needed by JPA
     public inspectionReport(){
 
     }
-    public inspectionReport(String frNo, String formatNo, String inspectionAndTesting, String safetyDevices, String inspectionFrequency, String testProcedure, String testDate, Integer safetyDevicesNo) {
+    public inspectionReport(String frNo, String formatNo, String inspectionAndTesting, String safetyDevices, String inspectionFrequency, String testProcedure, String testDate, Integer safetyDevicesNo, String author) {
         this.uuid = inspectionReport.uuidGenerator();
+        this.timeStamp= inspectionReport.timeStampGenerator();
         this.frNo = frNo;
         this.formatNo = formatNo;
         this.inspectionAndTesting = inspectionAndTesting;
@@ -47,8 +71,10 @@ public class inspectionReport {
         this.testProcedure = testProcedure;
         this.testDate = testDate;
         this.safetyDevicesNo = safetyDevicesNo;
+        this.author= author;
+        System.out.println("report generated at:\n"+ inspectionReport.timeStampGenerator());
     }
-    //getters and setters for Jackson tp convert to JSON
+    //getters and setters for Jackson to convert to JSON
 
     public String getUuid() {
         return uuid;
@@ -142,5 +168,10 @@ public class inspectionReport {
     public static String uuidGenerator(){
         UUID x = UUID.randomUUID();
         return x.toString();
+    }
+    public static String timeStampGenerator(){
+        Date x =   new Date();
+        SimpleDateFormat y = new SimpleDateFormat("dd/MM/Y HH:mm a");
+        return y.format(x);
     }
 }

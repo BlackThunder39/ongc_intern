@@ -9,6 +9,8 @@ public interface inspectionReportDAO {
 
     List<inspectionReport> getAll();
 
+    List<inspectionReport> searchReports(String x);
+
     //CRUD
     //Create
     inspectionReport createReport(inspectionReport report);

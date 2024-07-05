@@ -33,6 +33,25 @@ public class inspectionReportDAOimpl implements inspectionReportDAO{
     }
 
     @Override
+    public List<inspectionReport> searchReports(String x) {
+        // Include wildcards
+        String pattern = "%" + x + "%";
+        TypedQuery<inspectionReport> q = em.createQuery(
+                "SELECT rep FROM inspectionReport rep " +
+                        "WHERE rep.uuid = :x " +
+                        "OR rep.frNo LIKE :pattern " +
+                        "OR rep.author LIKE :pattern " +
+                        "OR rep.inspectionAndTesting LIKE :pattern",
+                inspectionReport.class
+        );
+        q.setParameter("x", x);
+        q.setParameter("pattern", pattern);
+
+        return q.getResultList();
+    }
+
+
+    @Override
     public  inspectionReport createReport(inspectionReport report) {
         return em.merge(report);
     }
